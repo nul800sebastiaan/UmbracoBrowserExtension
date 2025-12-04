@@ -28,46 +28,34 @@ jobs:
       - name: Generate icons
         run: npm run generate-icons
 
-      - name: Remove development files
+      - name: Prepare build directory
         run: |
-          rm -f .gitignore
-          rm -rf .github
-          rm -f generate-icons.js
-          rm -f package.json
-          rm -f package-lock.json
-          rm -f README.md
-          rm -rf node_modules
+          mkdir -p build
+          cp manifest.json build/
+          cp popup.html build/
+          cp popup.js build/
+          cp options.html build/
+          cp options.js build/
+          cp background.js build/
+          cp -r icons build/
 
-      - name: Create ZIP for Chrome/Edge
+      - name: Create universal ZIP
         run: |
-          zip -r umbraco-power-tools-chrome.zip . -x "*.git*" "node_modules/*"
+          cd build
+          zip -r ../umbraco-power-tools.zip .
+          cd ..
 
-      - name: Prepare Firefox version
+      - name: Create Chrome/Edge ZIP
         run: |
-          # Firefox manifest v3 compatibility adjustments if needed
-          cp manifest.json manifest-firefox.json
+          cd build
+          zip -r ../umbraco-power-tools-chrome.zip .
+          cd ..
 
-      - name: Create ZIP for Firefox
+      - name: Create Firefox ZIP
         run: |
-          zip -r umbraco-power-tools-firefox.zip . -x "*.git*" "node_modules/*" "manifest.json"
-          cd $(dirname umbraco-power-tools-firefox.zip)
-          zip umbraco-power-tools-firefox.zip manifest-firefox.json
-
-      - name: Create unified ZIP
-        run: |
-          # Restore original state
-          git checkout .
-          npm install
-          npm run generate-icons
-          zip -r umbraco-power-tools.zip \
-            manifest.json \
-            popup.html \
-            popup.js \
-            options.html \
-            options.js \
-            background.js \
-            icons/*.png \
-            -x "*.git*" "node_modules/*" "*.md" "package*.json" "generate-icons.js"
+          cd build
+          zip -r ../umbraco-power-tools-firefox.zip .
+          cd ..
 
       - name: Get version from tag
         id: get_version
