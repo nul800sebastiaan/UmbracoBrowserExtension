@@ -234,10 +234,10 @@ async function loadMastodonPosts() {
       postElement.href = post.url;
       postElement.target = '_blank';
 
-      // Strip HTML tags from content
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = post.content;
-      const textContent = tempDiv.textContent || tempDiv.innerText || '';
+      // Strip HTML tags from content using DOMParser (safer than innerHTML)
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(post.content, 'text/html');
+      const textContent = doc.body.textContent || '';
 
       const contentElement = document.createElement('div');
       contentElement.className = 'mastodon-post-content';

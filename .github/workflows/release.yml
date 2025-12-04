@@ -34,6 +34,7 @@ jobs:
           cp manifest.json build/
           cp popup.html build/
           cp popup.js build/
+          cp init.js build/
           cp options.html build/
           cp options.js build/
           cp background.js build/
