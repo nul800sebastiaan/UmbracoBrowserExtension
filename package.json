@@ -1,0 +1,11 @@
+{
+  "name": "umbraco-power-tools",
+  "version": "1.0.0",
+  "description": "Browser extension for Umbraco developers",
+  "scripts": {
+    "generate-icons": "node generate-icons.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0"
+  }
+}

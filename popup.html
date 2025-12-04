@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Umbraco Power Tools</title>
+  <style>
+    body {
+      width: 600px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+    }
+
+    h3 {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      flex: 1;
+    }
+
+    #toggleButton {
+      background-color: #f8f9fc;
+      color: #3544b1;
+      border: 1px solid #e0e4f0;
+    }
+
+    #toggleButton:hover {
+      background-color: #eef1f8;
+    }
+
+    #goToRoot {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    #goToRoot:hover {
+      background-color: #e0e0e0;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      display: block;
+    }
+
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      display: block;
+    }
+
+    .status.info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      display: block;
+    }
+
+    .social-feeds {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+
+    .feed-column {
+      min-width: 0;
+    }
+
+    .feed-column h4 {
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .forum-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .forum-post {
+      padding: 8px;
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.2s;
+      display: block;
+    }
+
+    .forum-post:hover {
+      background-color: #efefef;
+    }
+
+    .forum-post-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #3544b1;
+      margin-bottom: 4px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .forum-post-meta {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .forum-loading {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .mastodon-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mastodon-post {
+      padding: 8px;
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.2s;
+      display: block;
+    }
+
+    .mastodon-post:hover {
+      background-color: #efefef;
+    }
+
+    .mastodon-post-content {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 4px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .mastodon-post-meta {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .mastodon-loading {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      padding: 12px;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+      }
+
+      h3 {
+        color: #f0f0f0;
+      }
+
+      #toggleButton {
+        background-color: #2a3050;
+        color: #7b8fd8;
+        border: 1px solid #3a4060;
+      }
+
+      #toggleButton:hover {
+        background-color: #3a4060;
+      }
+
+      #goToRoot {
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+      }
+
+      #goToRoot:hover {
+        background-color: #3a3a3a;
+      }
+
+      .status.success {
+        background-color: #1e4620;
+        color: #8fd18f;
+      }
+
+      .status.error {
+        background-color: #4a1e1e;
+        color: #f5a5a5;
+      }
+
+      .status.info {
+        background-color: #1a3a4a;
+        color: #7ec9e8;
+      }
+
+      .social-feeds {
+        border-top: 1px solid #3a3a3a;
+      }
+
+      .feed-column h4 {
+        color: #f0f0f0;
+      }
+
+      .forum-post {
+        background-color: #2a2a2a;
+      }
+
+      .forum-post:hover {
+        background-color: #3a3a3a;
+      }
+
+      .forum-post-title {
+        color: #7b8fd8;
+      }
+
+      .forum-post-meta {
+        color: #999;
+      }
+
+      .forum-loading {
+        color: #999;
+      }
+
+      .mastodon-post {
+        background-color: #2a2a2a;
+      }
+
+      .mastodon-post:hover {
+        background-color: #3a3a3a;
+      }
+
+      .mastodon-post-content {
+        color: #e0e0e0;
+      }
+
+      .mastodon-post-meta {
+        color: #999;
+      }
+
+      .mastodon-loading {
+        color: #999;
+      }
+    }
+
+    /* Manual theme overrides */
+    body[data-theme="dark"] {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+
+    body[data-theme="dark"] h3 {
+      color: #f0f0f0;
+    }
+
+    body[data-theme="dark"] #toggleButton {
+      background-color: #2a3050;
+      color: #7b8fd8;
+      border: 1px solid #3a4060;
+    }
+
+    body[data-theme="dark"] #toggleButton:hover {
+      background-color: #3a4060;
+    }
+
+    body[data-theme="dark"] #goToRoot {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+    }
+
+    body[data-theme="dark"] #goToRoot:hover {
+      background-color: #3a3a3a;
+    }
+
+    body[data-theme="dark"] .status.success {
+      background-color: #1e4620;
+      color: #8fd18f;
+    }
+
+    body[data-theme="dark"] .status.error {
+      background-color: #4a1e1e;
+      color: #f5a5a5;
+    }
+
+    body[data-theme="dark"] .status.info {
+      background-color: #1a3a4a;
+      color: #7ec9e8;
+    }
+
+    body[data-theme="dark"] .social-feeds {
+      border-top: 1px solid #3a3a3a;
+    }
+
+    body[data-theme="dark"] .feed-column h4 {
+      color: #f0f0f0;
+    }
+
+    body[data-theme="dark"] .forum-post {
+      background-color: #2a2a2a;
+    }
+
+    body[data-theme="dark"] .forum-post:hover {
+      background-color: #3a3a3a;
+    }
+
+    body[data-theme="dark"] .forum-post-title {
+      color: #7b8fd8;
+    }
+
+    body[data-theme="dark"] .forum-post-meta {
+      color: #999;
+    }
+
+    body[data-theme="dark"] .forum-loading {
+      color: #999;
+    }
+
+    body[data-theme="dark"] .mastodon-post {
+      background-color: #2a2a2a;
+    }
+
+    body[data-theme="dark"] .mastodon-post:hover {
+      background-color: #3a3a3a;
+    }
+
+    body[data-theme="dark"] .mastodon-post-content {
+      color: #e0e0e0;
+    }
+
+    body[data-theme="dark"] .mastodon-post-meta {
+      color: #999;
+    }
+
+    body[data-theme="dark"] .mastodon-loading {
+      color: #999;
+    }
+
+    body[data-theme="light"] {
+      background-color: white;
+      color: #333;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .footer a {
+      font-size: 12px;
+      color: #3544b1;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: #2a3690;
+      text-decoration: underline;
+    }
+
+    body[data-theme="dark"] .footer {
+      border-top: 1px solid #3a3a3a;
+    }
+
+    body[data-theme="dark"] .footer a {
+      color: #7b8fd8;
+    }
+
+    body[data-theme="dark"] .footer a:hover {
+      color: #9bafff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .footer {
+        border-top: 1px solid #3a3a3a;
+      }
+
+      .footer a {
+        color: #7b8fd8;
+      }
+
+      .footer a:hover {
+        color: #9bafff;
+      }
+    }
+
+    /* Force light mode when explicitly set */
+    body[data-theme="light"] h3 {
+      color: #333;
+    }
+
+    body[data-theme="light"] #toggleButton {
+      background-color: #f8f9fc;
+      color: #3544b1;
+      border: 1px solid #e0e4f0;
+    }
+
+    body[data-theme="light"] #toggleButton:hover {
+      background-color: #eef1f8;
+    }
+
+    body[data-theme="light"] #goToRoot {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    body[data-theme="light"] #goToRoot:hover {
+      background-color: #e0e0e0;
+    }
+
+    body[data-theme="light"] .social-feeds {
+      border-top: 1px solid #e0e0e0;
+    }
+
+    body[data-theme="light"] .feed-column h4 {
+      color: #333;
+    }
+
+    body[data-theme="light"] .forum-post {
+      background-color: #f8f8f8;
+    }
+
+    body[data-theme="light"] .forum-post:hover {
+      background-color: #efefef;
+    }
+
+    body[data-theme="light"] .forum-post-title {
+      color: #3544b1;
+    }
+
+    body[data-theme="light"] .forum-post-meta {
+      color: #666;
+    }
+
+    body[data-theme="light"] .forum-loading {
+      color: #666;
+    }
+
+    body[data-theme="light"] .mastodon-post {
+      background-color: #f8f8f8;
+    }
+
+    body[data-theme="light"] .mastodon-post:hover {
+      background-color: #efefef;
+    }
+
+    body[data-theme="light"] .mastodon-post-content {
+      color: #333;
+    }
+
+    body[data-theme="light"] .mastodon-post-meta {
+      color: #666;
+    }
+
+    body[data-theme="light"] .mastodon-loading {
+      color: #666;
+    }
+
+    body[data-theme="light"] .footer {
+      border-top: 1px solid #e0e0e0;
+    }
+
+    body[data-theme="light"] .footer a {
+      color: #3544b1;
+    }
+
+    body[data-theme="light"] .footer a:hover {
+      color: #2a3690;
+    }
+
+    body[data-theme="light"] .status.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    body[data-theme="light"] .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    body[data-theme="light"] .status.info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+  </style>
+  <script>
+    // Apply theme as early as possible
+    chrome.storage.local.get(['themeMode'], (result) => {
+      const themeMode = result.themeMode || 'auto';
+      if (themeMode !== 'auto') {
+        // Wait for body to exist
+        const checkBody = setInterval(() => {
+          if (document.body) {
+            document.body.setAttribute('data-theme', themeMode);
+            clearInterval(checkBody);
+          }
+        }, 1);
+      }
+    });
+  </script>
+</head>
+<body>
+  <h3>Umbraco Power Tools</h3>
+
+  <div class="button-group">
+    <button id="goToRoot">Go to Site Root</button>
+    <button id="toggleButton">Go to Umbraco Admin</button>
+  </div>
+
+  <div id="status" class="status"></div>
+
+  <div class="social-feeds">
+    <div class="feed-column">
+      <h4>Socials</h4>
+      <div id="mastodonPosts" class="mastodon-posts">
+        <div class="mastodon-loading">Loading...</div>
+      </div>
+    </div>
+
+    <div class="feed-column">
+      <h4>Latest Forum Posts</h4>
+      <div id="forumPosts" class="forum-posts">
+        <div class="forum-loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://forum.umbraco.com" target="_blank">Forum</a>
+    <a href="https://docs.umbraco.com" target="_blank">Docs</a>
+    <a href="https://community.umbraco.com" target="_blank">Community</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
