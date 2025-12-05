@@ -207,7 +207,7 @@ async function loadMastodonPosts() {
 
     if (!posts) {
       // Fetch fresh data
-      const response = await fetch('https://umbracocommunity.social/api/v1/timelines/tag/umbraco?limit=5');
+      const response = await fetch('https://mastodon.social/api/v1/timelines/tag/umbraco?limit=5');
 
       if (!response.ok) {
         throw new Error('Failed to fetch Mastodon posts');

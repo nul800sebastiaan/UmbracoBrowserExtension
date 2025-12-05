@@ -10,6 +10,13 @@ A browser extension for Umbraco developers that helps you quickly navigate betwe
 - **Theme Support**: Light/Dark/Auto theme modes
 - **Configurable**: Open links in new tab or current tab
 
+
+## Screenshots
+
+![Screenshot of the extension when opened](img/extension-open.png)
+
+![Screenshot of the settings for the extension](img/extension-settings.png)
+
 ## Installation
 
 ### From Browser Extension Stores

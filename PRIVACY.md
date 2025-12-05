@@ -53,10 +53,10 @@ The Extension retrieves publicly available content from the following sources:
 - **Data Retrieved**: Public forum post titles, reply counts, and timestamps
 - **Privacy Policy**: [Umbraco Forum Privacy Policy](https://umbraco.com/legal/privacy-policy/)
 
-### Mastodon (umbracocommunity.social)
+### Mastodon (mastodon.social)
 - **Purpose**: Display latest posts with #Umbraco hashtag
 - **Data Retrieved**: Public post content, usernames, and timestamps
-- **Privacy Policy**: [Umbraco Community Mastodon Instance](https://umbracocommunity.social/about)
+- **Privacy Policy**: [Mastodon.social](https://mastodon.social/about)
 
 **Important:** These requests retrieve only publicly available information. No authentication or personal data is sent to these services.
 
