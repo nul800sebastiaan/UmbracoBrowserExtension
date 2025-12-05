@@ -388,7 +388,9 @@
       margin-top: 16px;
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 16px;
+      position: relative;
     }
 
     .footer a {
@@ -403,6 +405,29 @@
       text-decoration: underline;
     }
 
+    .settings-button {
+      position: absolute;
+      right: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      transition: color 0.2s;
+    }
+
+    .settings-button:hover {
+      color: #3544b1;
+    }
+
+    .settings-button svg {
+      width: 16px;
+      height: 16px;
+    }
+
     body[data-theme="dark"] .footer {
       border-top: 1px solid #3a3a3a;
     }
@@ -413,6 +438,14 @@
 
     body[data-theme="dark"] .footer a:hover {
       color: #9bafff;
+    }
+
+    body[data-theme="dark"] .settings-button {
+      color: #999;
+    }
+
+    body[data-theme="dark"] .settings-button:hover {
+      color: #7b8fd8;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -426,6 +459,14 @@
 
       .footer a:hover {
         color: #9bafff;
+      }
+
+      .settings-button {
+        color: #999;
+      }
+
+      .settings-button:hover {
+        color: #7b8fd8;
       }
     }
 
@@ -513,6 +554,14 @@
       color: #2a3690;
     }
 
+    body[data-theme="light"] .settings-button {
+      color: #666;
+    }
+
+    body[data-theme="light"] .settings-button:hover {
+      color: #3544b1;
+    }
+
     body[data-theme="light"] .status.success {
       background-color: #d4edda;
       color: #155724;
@@ -560,6 +609,12 @@
     <a href="https://forum.umbraco.com" target="_blank">Forum</a>
     <a href="https://docs.umbraco.com" target="_blank">Docs</a>
     <a href="https://community.umbraco.com" target="_blank">Community</a>
+    <button id="settingsButton" class="settings-button" title="Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    </button>
   </div>
 
   <script src="popup.js"></script>

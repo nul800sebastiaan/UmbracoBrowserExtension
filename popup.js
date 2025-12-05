@@ -275,6 +275,12 @@ async function loadMastodonPosts() {
   }
 }
 
+// Settings button handler
+const settingsButton = document.getElementById('settingsButton');
+settingsButton.addEventListener('click', () => {
+  chrome.runtime.openOptionsPage();
+});
+
 // Load forum posts and Mastodon posts when popup opens
 loadForumPosts();
 loadMastodonPosts();
