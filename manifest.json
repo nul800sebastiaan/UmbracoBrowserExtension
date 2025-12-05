@@ -9,7 +9,8 @@
     "tabs"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "https://forum.umbraco.com/*",
+    "https://mastodon.social/*"
   ],
   "action": {
     "default_popup": "popup.html",
