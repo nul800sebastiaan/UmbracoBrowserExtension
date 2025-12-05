@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Umbraco Power Tools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Toggle between Umbraco admin (/umbraco) and site root (/) with a single click",
   "permissions": [
     "activeTab",
