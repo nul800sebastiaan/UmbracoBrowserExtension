@@ -10,7 +10,8 @@
   ],
   "host_permissions": [
     "https://forum.umbraco.com/*",
-    "https://mastodon.social/*"
+    "https://mastodon.social/*",
+    "https://umbracalendar.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
