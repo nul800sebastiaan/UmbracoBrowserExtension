@@ -262,7 +262,7 @@ async function loadCalendarEvents() {
       // Get all item elements
       const items = xmlDoc.querySelectorAll('item');
 
-      events = Array.from(items).slice(0, 10).map(item => {
+      events = Array.from(items).map(item => {
         const title = item.querySelector('title')?.textContent || '';
         const link = item.querySelector('link')?.textContent || '';
 
@@ -283,8 +283,19 @@ async function loadCalendarEvents() {
         };
       });
 
+      // Sort by start date ascending (soonest first), then take top 10
+      events = events
+        .filter(e => e.startDateStr)
+        .sort((a, b) => new Date(a.startDateStr) - new Date(b.startDateStr))
+        .slice(0, 10);
+
       // Cache the data
       await setCachedData('calendarEvents', events);
+    } else {
+      // Sort cached events too (cache may predate this fix)
+      events = events
+        .filter(e => e.startDateStr)
+        .sort((a, b) => new Date(a.startDateStr) - new Date(b.startDateStr));
     }
 
     // Clear loading message
