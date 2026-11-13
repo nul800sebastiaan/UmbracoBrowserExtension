@@ -5,7 +5,7 @@ A browser extension for Umbraco developers that helps you quickly navigate betwe
 ## Features
 
 - **Quick Navigation**: Toggle between `/umbraco` admin panel and site root (`/`) with a single click
-- **Community Feed**: View latest posts from Umbraco Forum and Mastodon (#Umbraco)
+- **Community Feed**: View latest posts from Umbraco Forum and Mastodon (#Umbraco), with preview images, plus upcoming community events
 - **Quick Links**: Fast access to Forum, Docs, and Community sites
 - **Theme Support**: Light/Dark/Auto theme modes
 - **Configurable**: Open links in new tab or current tab

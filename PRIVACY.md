@@ -30,6 +30,9 @@ The Extension accesses your current tab's URL only when you click the navigation
 The Extension temporarily caches the following content locally for 5 minutes to reduce API requests:
 - Latest forum posts from forum.umbraco.com
 - Latest Mastodon posts with #Umbraco hashtag
+- Upcoming events from umbracalendar.com
+
+Preview images shown with these posts are loaded directly from the servers that host them (the forum's image host, Mastodon's media servers and Meetup's image host), just like the post data itself.
 
 **Important:** This cache is stored locally in your browser only and contains only public information.
 

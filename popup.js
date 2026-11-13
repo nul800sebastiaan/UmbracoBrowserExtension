@@ -140,6 +140,22 @@ function formatTimeAgo(date) {
   }
 }
 
+// Build a preview image for a feed item (only http(s) URLs); removes itself if it fails to load
+function createPreviewImage(item) {
+  if (!item.image || !/^https:\/\//i.test(item.image)) {
+    return null;
+  }
+
+  const img = document.createElement('img');
+  img.className = 'post-preview';
+  img.src = item.image;
+  img.alt = item.imageAlt || '';
+  img.loading = 'lazy';
+  img.referrerPolicy = 'no-referrer';
+  img.addEventListener('error', () => img.remove());
+  return img;
+}
+
 // Fetch and display all posts (forum and social mixed)
 async function loadAllPosts() {
   const latestPostsContainer = document.getElementById('latestPosts');
@@ -179,6 +195,8 @@ async function loadAllPosts() {
       title: topic.title,
       url: `https://forum.umbraco.com/t/${topic.slug}/${topic.id}`,
       meta: `${topic.posts_count} replies`,
+      image: topic.image_url || null,
+      imageAlt: '',
       data: topic
     }));
 
@@ -188,8 +206,15 @@ async function loadAllPosts() {
       const doc = parser.parseFromString(post.content, 'text/html');
       const textContent = doc.body.textContent || '';
 
+      // Use the first image attachment as preview, unless the post is marked sensitive
+      const media = post.sensitive
+        ? null
+        : (post.media_attachments || []).find(m => m.type === 'image' && (m.preview_url || m.url));
+
       return {
         type: 'mastodon',
+        image: media ? (media.preview_url || media.url) : null,
+        imageAlt: media?.description || '',
         date: new Date(post.created_at),
         title: textContent,
         url: post.url,
@@ -227,6 +252,10 @@ async function loadAllPosts() {
       metaElement.className = item.type === 'forum' ? 'forum-post-meta' : 'mastodon-post-meta';
       metaElement.textContent = `${item.meta} • ${formatTimeAgo(item.date)}`;
 
+      const previewElement = createPreviewImage(item);
+      if (previewElement) {
+        postElement.appendChild(previewElement);
+      }
       postElement.appendChild(titleElement);
       postElement.appendChild(metaElement);
       latestPostsContainer.appendChild(postElement);
@@ -273,11 +302,15 @@ async function loadCalendarEvents() {
 
         const description = item.querySelector('description')?.textContent || '';
 
-        console.log('Event:', title, 'Start date:', startDate); // Debug log
+        // Event image comes from the item's <enclosure>, when it is an image
+        const enclosure = item.querySelector('enclosure');
+        const enclosureType = enclosure?.getAttribute('type') || '';
+        const image = enclosureType.startsWith('image/') ? enclosure.getAttribute('url') : null;
 
         return {
           title,
           link,
+          image,
           startDateStr: startDate,
           description
         };
@@ -329,6 +362,10 @@ async function loadCalendarEvents() {
         metaElement.textContent = 'Date TBA';
       }
 
+      const previewElement = createPreviewImage(event);
+      if (previewElement) {
+        eventElement.appendChild(previewElement);
+      }
       eventElement.appendChild(titleElement);
       eventElement.appendChild(metaElement);
       calendarEventsContainer.appendChild(eventElement);
